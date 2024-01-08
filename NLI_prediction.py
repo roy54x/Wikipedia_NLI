@@ -1,6 +1,9 @@
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
-nli_model = AutoModelForSequenceClassification.from_pretrained('joeddav/xlm-roberta-large-xnli')
-tokenizer = AutoTokenizer.from_pretrained('joeddav/xlm-roberta-large-xnli')
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+
+model_name = "MoritzLaurer/multilingual-MiniLMv2-L6-mnli-xnli"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSequenceClassification.from_pretrained(model_name)
 
 en_1 = "On 17 October 2023, an explosion took place in the parking lot of the courtyard of " \
           "al-Ahli Arab Hospital in Gaza City during the 2023 Israel–Hamas war, resulting in " \
@@ -29,7 +32,6 @@ es_2 = "Las bajas reportadas varían dependiendo de las fuentes, en un primer mo
        "Fuentes occidentales consideran que no es posible determinar el número de fallecidos de " \
        "forma concluyente por falta de evidencia, pero las imágenes del hospital verificadas " \
        "por The New York Times y los relatos de los testigos dejan claro que la cifra es alta."
-
 es_3 = "a causa de la explosión es discutida. El Ministerio de Salud de Gaza desde el primer momento dijo " \
        "que fue un ataque aéreo israelí; mientras que las Fuerzas de Defensa de Israel (FDI) " \
        "aseguran que fue provocada por el lanzamiento fallido de un cohete por parte de la Yihad Islámica " \
@@ -37,6 +39,9 @@ es_3 = "a causa de la explosión es discutida. El Ministerio de Salud de Gaza de
        "musulmanes acusaron a Israel de ser el perpetrador. Las autoridades Israelíes han negado la " \
        "acusación con el apoyo de Estados Unidos (su principal aliado)."
 
-x = tokenizer.encode(en_1, es_1, return_tensors='pt', truncation_strategy='only_first')
-logits = nli_model(x.to(device))
-print(logits)
+input = tokenizer(en_1, es_1, truncation=True, return_tensors="pt")
+output = model(input["input_ids"])
+prediction = torch.softmax(output["logits"][0], -1).tolist()
+label_names = ["entailment", "neutral", "contradiction"]
+prediction = {name: round(float(pred) * 100, 1) for pred, name in zip(prediction, label_names)}
+print(prediction)
