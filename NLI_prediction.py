@@ -21,8 +21,8 @@ def get_prediction(model, source_paragraphs, target_paragraphs):
             input = tokenizer(source_paragraph, target_paragraph, truncation=True, return_tensors="pt")
             output = model(input["input_ids"])
             output = torch.softmax(output["logits"][0], -1).tolist()
-            prediction = (output[0]-output[2])*(1-output[1])
-            predictions[str(i)][str(j)] = prediction * 100
+            prediction = (max(output[2]-output[0], 0))*(1-output[1]) * 100
+            predictions[str(i)][str(j)] = prediction
     return predictions
 
 
