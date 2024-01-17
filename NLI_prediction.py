@@ -26,14 +26,14 @@ def get_prediction(model, source_paragraphs, target_paragraphs):
     return predictions
 
 
-model_name = "MoritzLaurer/multilingual-MiniLMv2-L6-mnli-xnli"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForSequenceClassification.from_pretrained(model_name)
+if __name__ == '__main__':
+    model_name = "MoritzLaurer/multilingual-MiniLMv2-L6-mnli-xnli"
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForSequenceClassification.from_pretrained(model_name)
 
-en_paragraphs = read_word_file("Wiki_pages\Al-Ahli Arab Hospital explosion\en.docx")
-es_paragraphs = read_word_file("Wiki_pages\Al-Ahli Arab Hospital explosion\es.docx")
-ar_paragraphs = read_word_file(r"Wiki_pages\Al-Ahli Arab Hospital explosion\ar.docx")
+    en_paragraphs = read_word_file("Wiki_pages\Al-Ahli Arab Hospital explosion\en.docx")
+    es_paragraphs = read_word_file("Wiki_pages\Al-Ahli Arab Hospital explosion\es.docx")
+    ar_paragraphs = read_word_file(r"Wiki_pages\Al-Ahli Arab Hospital explosion\ar.docx")
 
-
-predictions = get_prediction(model, en_paragraphs, es_paragraphs)
-print("done")
+    predictions = get_prediction(model, en_paragraphs, es_paragraphs)
+    print("done")
