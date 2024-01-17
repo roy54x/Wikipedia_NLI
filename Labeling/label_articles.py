@@ -22,8 +22,8 @@ class ArticleLabelingApp:
         self.target_language = None
 
         # GUI components
-        self.source_article_text = tk.Text(root, wrap="word", width=75, height=20)
-        self.target_article_text = tk.Text(root, wrap="word", width=75, height=20)
+        self.source_article_text = tk.Text(root, wrap="word", width=80, height=30)
+        self.target_article_text = tk.Text(root, wrap="word", width=80, height=30)
 
         self.label_var = tk.StringVar()
         self.label_var.set("Select Label:")
