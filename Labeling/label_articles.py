@@ -12,7 +12,7 @@ class ArticleLabelingApp:
         self.root.title("Article Labeling App")
 
         self.current_pair_index = 0
-        self.labels = []
+        self.labels = [""]*len(articles_to_label)
 
         # Load data
         self.database = database
@@ -63,8 +63,7 @@ class ArticleLabelingApp:
 
     def next_pair(self):
         label = self.label_var.get()
-        self.labels.append(label)
-
+        self.labels[self.current_pair_index] = label
         if self.current_pair_index < len(self.articles_to_label) - 1:
             self.current_pair_index += 1
             self.load_pair()
