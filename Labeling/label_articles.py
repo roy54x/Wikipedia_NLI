@@ -84,8 +84,15 @@ class ArticleLabelingApp:
             tk.messagebox.showinfo("Labels Saved", f"Labels saved to {save_path}")
 
     def translate_to_english(self):
-        target_article = self.target_article_text.get("1.0", tk.END)[:2000]
-        translated_text = GoogleTranslator(source=self.target_language, target=self.source_language).translate(target_article)
+        target_article = self.target_article_text.get("1.0", tk.END)
+        paragraphs = target_article.split('\n')
+        translator = GoogleTranslator(source=self.target_language, target=self.source_language)
+
+        translated_text = ""
+        for paragraph in paragraphs:
+            if paragraph.strip():
+                translated_paragraph = translator.translate(paragraph)
+                translated_text += translated_paragraph + '\n'
 
         # Display the translated text in a new window
         translation_window = tk.Toplevel(self.root)
