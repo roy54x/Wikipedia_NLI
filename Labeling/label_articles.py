@@ -10,6 +10,7 @@ class ArticleLabelingApp:
     def __init__(self, root, database, articles_to_label):
         self.root = root
         self.root.title("Article Labeling App")
+        self.root.configure(bg="lightblue")
 
         self.current_pair_index = 0
         self.labels = [""]*len(articles_to_label)
@@ -21,16 +22,26 @@ class ArticleLabelingApp:
         self.target_language = None
 
         # GUI components
-        self.source_article_text = tk.Text(root, wrap="word", width=50, height=10)
-        self.target_article_text = tk.Text(root, wrap="word", width=50, height=10)
+        self.source_article_text = tk.Text(root, wrap="word", width=75, height=20)
+        self.target_article_text = tk.Text(root, wrap="word", width=75, height=20)
 
         self.label_var = tk.StringVar()
         self.label_var.set("Select Label:")
-        self.label_dropdown = ttk.Combobox(root, textvariable=self.label_var, values=["1 - Articles are identical or almost identical",
-                                                                                      "2 - Difference in the level of detail",
-                                                                                      "3 - Missing information in one of the entries",
-                                                                                      "4 - Contradiction in wording or a different narrative",
-                                                                                      "5 - Clear contradiction in the facts"])
+        self.label_dropdown = ttk.Combobox(
+            root,
+            textvariable=self.label_var,
+            values=["1: Articles are identical or almost identical",
+                    "2: Difference in the level of detail",
+                    "3: Missing information in one of the entries",
+                    "4: Contradiction in wording or a different narrative",
+                    "5: Clear contradiction in the facts"],
+            style="TCombobox",
+            width=50
+        )
+
+        # Configure style for Combobox
+        style = ttk.Style()
+        style.configure('TCombobox', padding=5, font=('Arial', 12))
 
         self.translate_button = tk.Button(root, text="Translate to English", command=self.translate_to_english)
         self.next_button = tk.Button(root, text="Next", command=self.next_pair)
