@@ -22,6 +22,11 @@ class ArticleLabelingApp:
         self.target_language = None
 
         # GUI components
+        self.source_article_title = tk.Label(root, text="", font=('Arial', 14, 'bold'),
+                                             bg="lightblue", fg="black")
+        self.target_article_title = tk.Label(root, text="", font=('Arial', 14, 'bold'),
+                                             bg="lightblue", fg="black")
+
         self.source_article_text = tk.Text(root, wrap="word", width=80, height=30)
         self.target_article_text = tk.Text(root, wrap="word", width=80, height=30)
 
@@ -43,19 +48,22 @@ class ArticleLabelingApp:
         style = ttk.Style()
         style.configure('TCombobox', padding=5, font=('Arial', 12))
 
-        self.translate_button = tk.Button(root, text="Translate to English", command=self.translate_to_english)
-        self.next_button = tk.Button(root, text="Next", command=self.next_pair)
-        self.prev_button = tk.Button(root, text="Previous", command=self.prev_pair)
-        self.save_button = tk.Button(root, text="Save Labels", command=self.save_labels)
+        self.translate_button = tk.Button(root, text="Translate to English", command=self.translate_to_english,
+                                          bg="lightyellow")
+        self.next_button = tk.Button(root, text="Next", command=self.next_pair, bg="lightgreen")
+        self.prev_button = tk.Button(root, text="Previous", command=self.prev_pair, bg="lightgreen")
+        self.save_button = tk.Button(root, text="Save Labels", command=self.save_labels, bg="lightcoral")
 
         # Grid layout
-        self.source_article_text.grid(row=0, column=0, padx=10, pady=10)
-        self.target_article_text.grid(row=0, column=1, padx=10, pady=10)
-        self.label_dropdown.grid(row=1, column=0, columnspan=2, pady=5)
-        self.translate_button.grid(row=2, column=0, columnspan=2, pady=5)
-        self.prev_button.grid(row=2, column=0, pady=5)
-        self.next_button.grid(row=2, column=1, pady=5)
-        self.save_button.grid(row=3, column=0, columnspan=2, pady=10)
+        self.source_article_title.grid(row=0, column=0, sticky="w", padx=10, pady=5, columnspan=2)
+        self.target_article_title.grid(row=0, column=2, sticky="w", padx=10, pady=5, columnspan=2)
+        self.source_article_text.grid(row=1, column=0, padx=10, pady=10, columnspan=2)
+        self.target_article_text.grid(row=1, column=2, padx=10, pady=10, columnspan=2)
+        self.label_dropdown.grid(row=2, column=1, columnspan=2, pady=5)
+        self.translate_button.grid(row=3, column=1, columnspan=2, pady=5)
+        self.prev_button.grid(row=3, column=1, pady=5)
+        self.next_button.grid(row=3, column=2, pady=5)
+        self.save_button.grid(row=4, column=1, columnspan=2, pady=10)
 
         # Initialize GUI with the first pair
         self.load_pair()
@@ -64,14 +72,20 @@ class ArticleLabelingApp:
         article_pair = self.articles_to_label.iloc[self.current_pair_index]
         self.source_language = article_pair["source_language"]
         self.target_language = article_pair["target_language"]
-        source_article_idx = self.database[self.source_language][2].index(article_pair["source_article"]).as_py()
+        source_article_name = article_pair["source_article"]
+        target_article_name = article_pair["target_article"]
+
+        # Set article names as titles
+        self.source_article_title.config(text=source_article_name)
+        self.target_article_title.config(text=target_article_name)
+
+        source_article_idx = self.database[self.source_language][2].index(source_article_name).as_py()
         source_article = self.database[self.source_language][3][source_article_idx]
-        target_article_idx = self.database[self.target_language][2].index(article_pair["target_article"]).as_py()
+        target_article_idx = self.database[self.target_language][2].index(target_article_name).as_py()
         target_article = self.database[self.target_language][3][target_article_idx]
 
         self.source_article_text.delete("1.0", tk.END)
         self.source_article_text.insert(tk.END, source_article)
-
         self.target_article_text.delete("1.0", tk.END)
         self.target_article_text.insert(tk.END, target_article)
 
