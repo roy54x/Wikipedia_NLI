@@ -63,7 +63,7 @@ class ArticleLabelingApp:
 
     def next_pair(self):
         label = self.label_var.get()
-        self.labels.append({"pair_index": self.current_pair_index, "label": label})
+        self.labels.append(label)
 
         if self.current_pair_index < len(self.articles_to_label) - 1:
             self.current_pair_index += 1
@@ -81,7 +81,7 @@ class ArticleLabelingApp:
         if save_path:
             labeled_pairs_df = self.articles_to_label.copy()
             labeled_pairs_df["label"] = pd.Series(self.labels)
-            labeled_pairs_df.to_csv(save_path.replace(".csv", "_labeled.csv"), index=False)
+            labeled_pairs_df.to_csv(save_path, index=False)
             tk.messagebox.showinfo("Labels Saved", f"Labels saved to {save_path}")
 
     def translate_to_english(self):
