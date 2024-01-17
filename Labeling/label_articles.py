@@ -26,8 +26,11 @@ class ArticleLabelingApp:
 
         self.label_var = tk.StringVar()
         self.label_var.set("Select Label:")
-        self.label_dropdown = ttk.Combobox(root, textvariable=self.label_var, values=["Label 1", "Label 2", "Label 3",
-                                                                                      "Label 4", "Label 5"])
+        self.label_dropdown = ttk.Combobox(root, textvariable=self.label_var, values=["1 - Articles are identical or almost identical",
+                                                                                      "2 - Difference in the level of detail",
+                                                                                      "3 - Missing information in one of the entries",
+                                                                                      "4 - Contradiction in wording or a different narrative",
+                                                                                      "5 - Clear contradiction in the facts"])
 
         self.translate_button = tk.Button(root, text="Translate to English", command=self.translate_to_english)
         self.next_button = tk.Button(root, text="Next", command=self.next_pair)
