@@ -1,3 +1,5 @@
+# This Python file uses the following encoding: utf-8
+
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 from docx import Document
